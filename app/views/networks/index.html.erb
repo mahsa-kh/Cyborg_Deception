@@ -1,0 +1,55 @@
+<h1>Networks#index</h1>
+<p>Find me in app/views/networks/index.html.erb</p>
+<table border="1">
+  <tr>
+    <td>Name </td>
+    <td>VLAN</td>
+    <td>DESCRIPTION</td>
+    <td>SUBNET</td>
+    <td>GATEWAY</td>
+    <td>ASSETS</td>
+    <td>DECOYS</td>
+    <td>OS</td>
+    <td>SERVICE</td>
+    <td>ACTIONS</td>
+  </tr>
+  <% @networks.each do |network|%>
+    <tr>
+        <td><%=  network.name%> </td>
+        <td><%=  network.vlan%> </td>
+        <td><%=  network.description%> </td>
+        <td><%=  network.subnet%> </td>
+        <td><%=  network.gateway%> </td>
+        <td>
+            <%if network.assets.nil? %> -
+            <%else%> <%=  network.assets%>
+            <%end%>
+        </td>
+        <td>
+            <%if network.decoys.nil? %> -
+            <%else%> <%=  network.decoys%>
+            <%end%>
+        </td>
+        <td>
+            <%if network.os.nil? %> -
+            <%else%> <%=  network.os%>
+            <%end%>
+        </td>
+        <td>
+            <%if network.service.nil? %> -
+            <%else%> <%=  network.service%>
+            <%end%>
+        </td>
+        <td>
+          <%= link_to edit_network_path(network.id), method: :get do %>
+            <img src="<%= asset_path('edit.svg') %>" alt="" width='20px' height='20px'>
+          <% end %>
+          <%= link_to network_path(network.id), method: :delete do %>
+            <img src="<%= asset_path('delete.svg') %>" alt="" width='20px' height='20px'>
+          <% end %>
+        </td>
+
+
+    </tr>
+  <%end%>
+</table>

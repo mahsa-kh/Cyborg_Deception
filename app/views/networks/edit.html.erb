@@ -1,0 +1,13 @@
+<%= simple_form_for @network do |f| %>
+  <%= f.error_notification %>
+  <%= f.input :name, as: :string, placeholder: 'NAME', error: 'Name is mandatory, please specify one', required: true, input_html: {class: "txtfield"} %>
+  <%= f.input :vlan, as: :string, placeholder: 'VLAN ID', error: 'VLAN is mandatory, please specify one', required: true, input_html: {class: "txtfield"} %>
+  <%= f.input :description, as: :string, placeholder: 'DESCRIPTION', input_html: {class: "txtfield"} %>
+  <%= f.input :subnet, as: :string, placeholder: 'SUBNET. ex: 192.168.100.0/24', error: 'subnet is mandatory', required: true, input_html: {class: "txtfield"} %>
+  <%= f.input :gateway, as: :string, placeholder: 'GATEWAY', error: 'gateway is mandatory, please specify one', required: true, input_html: {class: "txtfield"} %>
+
+  <%= f.button :submit, class: "button-primary" %>
+
+<% end %>
+
+
