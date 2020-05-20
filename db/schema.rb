@@ -10,23 +10,46 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_19_064012) do
+ActiveRecord::Schema.define(version: 2020_05_20_050405) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "networks", force: :cascade do |t|
+  create_table "decoy_templates", force: :cascade do |t|
     t.text "name"
-    t.text "vlan"
+    t.text "template"
     t.text "description"
-    t.text "subnet"
-    t.text "gateway"
-    t.integer "assets"
-    t.integer "decoys"
-    t.integer "os"
-    t.integer "service"
+    t.text "service"
+    t.text "os"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "decoys", force: :cascade do |t|
+    t.text "name"
+    t.text "description"
+    t.text "ip"
+    t.integer "config"
+    t.bigint "network_id", null: false
+    t.bigint "decoy_template_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["config"], name: "index_decoys_on_config", unique: true
+    t.index ["decoy_template_id"], name: "index_decoys_on_decoy_template_id"
+    t.index ["network_id"], name: "index_decoys_on_network_id"
+  end
+
+  create_table "networks", force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.text "vlan"
+    t.text "subnet"
+    t.text "gateway"
+    t.integer "asset"
+    t.bigint "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_networks_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -41,4 +64,6 @@ ActiveRecord::Schema.define(version: 2020_05_19_064012) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "decoys", "decoy_templates"
+  add_foreign_key "decoys", "networks"
 end
