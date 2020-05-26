@@ -1,0 +1,48 @@
+<h1>Decoy </h1>
+<table border="1">
+  <tr>
+    <td>Name </td>
+    <td>DESCRIPTION</td>
+    <td>IP</td>
+    <td>CONFIG</td>
+    <td>SERVICE</td>
+    <td>OS</td>
+    <td>ASSETS</td>
+    <td>VLAN</td>
+    <td>NETWORK NAME</td>
+    <td>NETWORK ID</td>
+    <td>DECOY TEMPLATE NAME</td>
+    <td>DECOY TEMPLATE ID</td>
+    <td>ACTIONS</td>
+  </tr>
+  <% @decoys.each do |decoy|%>
+    <tr>
+        <td>
+          <%= link_to decoy_path(decoy.id), method: :get do %>
+            <%=  decoy.name%>
+          <% end %>
+        </td>
+        <td><%=  decoy.description%> </td>
+        <td><%=  decoy.ip%> </td>
+        <td><%=  decoy.config%> </td>
+        <td><%=  decoy.decoy_template.service%> </td>
+        <td><%=  decoy.decoy_template.os%> </td>
+        <td><%=  decoy.network.asset%> </td>
+        <td><%=  decoy.network.vlan%> </td>
+        <td><%=  decoy.network.name%> </td>
+        <td><%=  decoy.network.id%> </td>
+        <td><%=  decoy.decoy_template.name%> </td>
+        <td><%=  decoy.decoy_template.id%> </td>
+        <td>
+          <%= link_to edit_decoy_path(decoy.id), method: :get do %>
+            <img src="<%= asset_path('edit.svg') %>" alt="" width='20px' height='20px'>
+          <% end %>
+          <%= link_to decoy_path(decoy), method: :delete do %>
+            <img src="<%= asset_path('delete.svg') %>" alt="" width='20px' height='20px'>
+          <% end %>
+        </td>
+
+
+    </tr>
+  <%end%>
+</table>

@@ -19,24 +19,20 @@
         <td><%=  @network.subnet%> </td>
         <td><%=  @network.gateway%> </td>
         <td>
-            <%if @network.assets.nil? %> -
-            <%else%> <%=  @network.assets%>
+            <%if @network.asset.nil? %> -
+            <%else%> <%=  @network.asset%>
             <%end%>
         </td>
         <td>
             <%if @network.decoys.nil? %> -
-            <%else%> <%=  @network.decoys%>
+            <%else%> <%=  @network.decoys.name%>
             <%end%>
         </td>
         <td>
-            <%if @network.os.nil? %> -
-            <%else%> <%=  @network.os%>
-            <%end%>
+            To Be Filled with the right method
         </td>
         <td>
-            <%if @network.service.nil? %> -
-            <%else%> <%=  @network.service%>
-            <%end%>
+            To Be Filled with the right method
         </td>
         <td>
           <%= link_to edit_network_path(@network.id), method: :get do %>

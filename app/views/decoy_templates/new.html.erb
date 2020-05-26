@@ -1,0 +1,13 @@
+<h1>Decoy template</h1>
+<%= simple_form_for @decoy_template do |f| %>
+  <%= f.error_notification %>
+  <%= f.input :name, as: :string, placeholder: 'NAME', error: 'Name is mandatory, please specify one', required: true, input_html: {class: "txtfield"} %>
+  <%= f.input :template, as: :string, placeholder: 'TEMPLATE', error: 'TEMPLATE is mandatory, please specify one', required: true, input_html: {class: "txtfield"} %>
+  <%= f.input :description, as: :string, placeholder: 'DESCRIPTION', input_html: {class: "txtfield"} %>
+  <%= f.input :service, as: :string, placeholder: 'SERVICE', error: 'SERVICE is mandatory',  input_html: {class: "txtfield"} %>
+  <%= f.input :os, as: :string, placeholder: 'OS. ex: LINUX', error: 'OS is mandatory', required: true, input_html: {class: "txtfield"} %>
+
+  <%= f.button :submit, class: "button-primary" %>
+
+<% end %>
+

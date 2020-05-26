@@ -1,3 +1,3 @@
 class DecoyTemplate < ApplicationRecord
-  hs_many :decoys
+  has_many :decoys
 end

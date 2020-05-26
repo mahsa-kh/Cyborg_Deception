@@ -1,0 +1,21 @@
+<h1>Decoy</h1>
+
+<%= simple_form_for @decoy do |f| %>
+  <%= f.error_notification %>
+  <%= f.input :name, as: :string, placeholder: 'NAME', error: 'Name is mandatory, please specify one', required: true, input_html: {class: "txtfield"} %>
+  <%= f.input :description, as: :string, placeholder: 'DESCRIPTION', error: 'DESCRIPTION is mandatory, please specify one', required: true, input_html: {class: "txtfield"} %>
+  <%= f.input :config, as: :integer, placeholder: 'CONFIG', error: 'CONFIG is mandatory',  required: true, input_html: {class: "txtfield"} %>
+  <%= f.input :ip, as: :string, placeholder: 'IP', error: 'IP is mandatory', required: true, input_html: {class: "txtfield"} %>
+  <%= f.input :network_id, collection: Network.all, label_method:
+        lambda {
+        |network| "#{network.name}"
+        }, required: true, input_html: {class: "txtfield"} %>
+  <%= f.input :decoy_template_id, collection: DecoyTemplate.all, label_method:
+        lambda {
+        |decoy_template| "#{decoy_template.name}"
+        }, required: true, input_html: {class: "txtfield"} %>
+  <%= f.button :submit, class: "button-primary" %>
+
+<% end %>
+
+

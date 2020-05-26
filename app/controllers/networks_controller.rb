@@ -14,7 +14,11 @@ class NetworksController < ApplicationController
 
   def create
     @network = Network.new(network_params)
+    @network.update(user_id: current_user.id)
+
     if @network.save
+      system("vconfig add {} {}".format(interface, data['vlan_id']))
+      system("docker network create -d macvlan --subnet={} --gateway={} -o parent={}.{} {}".format(data['subnet'],data['gateway'],interface,data['vlan_id'],macvlan_net))
       redirect_to networks_path
     else
       render :new
@@ -37,7 +41,7 @@ class NetworksController < ApplicationController
    private
 
   def network_params
-    params.require(:network).permit(:name, :vlan, :description, :subnet, :gateway, :assets)
+    params.require(:network).permit(:name, :vlan, :description, :subnet, :gateway, :asset)
   end
 
   def set_network

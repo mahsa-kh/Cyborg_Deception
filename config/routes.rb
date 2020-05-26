@@ -13,6 +13,12 @@ Rails.application.routes.draw do
 
   resources :networks, only: [:index, :new, :create, :show, :edit, :update, :destroy] do
   end
+
+  resources :decoys, only: [:index, :new, :create, :show, :edit, :update, :destroy] do
+  end
+
+  resources :decoy_templates, only: [:index, :new, :create, :show, :edit, :update, :destroy] do
+  end
 end
 
 
