@@ -17,8 +17,14 @@ class NetworksController < ApplicationController
     @network.update(user_id: current_user.id)
 
     if @network.save
-      system("vconfig add {} {}".format(interface, data['vlan_id']))
-      system("docker network create -d macvlan --subnet={} --gateway={} -o parent={}.{} {}".format(data['subnet'],data['gateway'],interface,data['vlan_id'],macvlan_net))
+      system("vconfig add #{ENV["INTERFACE"]} #{@network.vlan}")
+      # interface: environment variable va inja bayad call beshe
+      # vlan_id az network e tarif shode miad
+      macvlan_net = "macvlan-#{@network.vlan}"
+      system("docker network create -d macvlan --subnet=#{@network.subnet} --gateway=#{@network.gateway} -o parent=#{ENV["INTERFACE"]}.#{@network.vlan} #{macvlan_net}")
+
+      # parent: inetrface env varian.vlan e netwoerk
+      # akhari: macvlan_net: macvlan-vlanid
       redirect_to networks_path
     else
       render :new
@@ -26,8 +32,14 @@ class NetworksController < ApplicationController
   end
 
   def update
-    @network.update(network_params)
+    if @network.update(network_params)
+      system("vconfig add #{ENV["INTERFACE"]} #{@network.vlan}")
+      macvlan_net = "macvlan-#{@network.vlan}"
+      system("docker network create -d macvlan --subnet=#{@network.subnet} --gateway=#{@network.gateway} -o parent=#{ENV["INTERFACE"]}.#{@network.vlan} #{macvlan_net}")
       redirect_to network_path(@network)
+    else
+      render :edit
+    end
   end
 
   def edit

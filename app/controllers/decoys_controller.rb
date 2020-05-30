@@ -1,3 +1,4 @@
+require 'redis'
 class DecoysController < ApplicationController
   before_action :set_decoy, only: [:show, :edit, :update, :destroy]
 
@@ -16,11 +17,28 @@ class DecoysController < ApplicationController
     @decoy = Decoy.new(decoy_params)
 
     if @decoy.save
-      cmd= "docker create -it --cap-add NET_ADMIN --network {} -e GW={} --name {} -v /home/cyborg/Projects/deception-backend/{}:/usr/local/etc/haproxy/haproxy.cfg:ro cyborgsec/haproxy".format(data['network'],network ,data['name'],cfg)
+
+
+
+      file_name = "HAProxy-#{Time.now.getutc}-#{@decoy.name}"
+      system("cd controllers/template")
+      system("touch '#{file_name}.txt'")
+      # system("touch 'controllers/template/#{file_name}.txt'")
+      system("echo '#{@decoy.decoy_template.template}' >> '#{file_name}.txt'")
+
+       # az decoy template , field temokatre ro mirizam toosah
+      cmd= "docker create -it --cap-add NET_ADMIN --network #{@decoy.network.name} -e GW=#{@decoy.network.gateway} --ip #{@decoy.ip} --name #{@decoy.name} -v ./template/#{file_name}:/usr/local/etc/haproxy/haproxy.cfg:ro cyborgsec/haproxy"
+
+      #  --nameL mishe name e decoy ee kle user vaered karde
+      # -v: badesh address e : ./template/{esme file a config ke bala dorst kardim}  :/usr baghiaro negah midari
 
       system(cmd)
-      system("docker network connect deception {}".format(data['name']))
-      system("docker start {}".format(data['name']))
+      system("docker network connect deception #{@decoy.name}")
+      system("docker start #{@decoy.name}")
+
+      redis = Redis.new(host: "localhost")
+      redis.set(@decoy.ip, @decoy.name)
+
       redirect_to decoys_path
     else
       render :new
@@ -28,14 +46,38 @@ class DecoysController < ApplicationController
   end
 
   def update
-    @decoy.update(decoy_params)
+
+    if @decoy.update(decoy_params)
+      system("docker stop #{@decoy.name}")
+      system("docker rm #{@decoy.name}")
+      file_name = "HAProxy-#{Time.now.getutc}-#{@decoy.name}"
+      system("cd template")
+      system("touch #{file_name}.txt")
+      system("echo '#{@decoy.decoy_template.template}' >> #{file_name}.txt")
+
+      cmd= "docker create -it --cap-add NET_ADMIN --network #{@decoy.network.name} -e GW=#{@decoy.network.gateway} --ip #{@decoy.ip} --name #{@decoy.name} -v ./template/#{file_name}:/usr/local/etc/haproxy/haproxy.cfg:ro cyborgsec/haproxy"
+
+      system(cmd)
+      system("docker network connect deception #{@decoy.name}")
+      system("docker start #{@decoy.name}")
+
+
+
+      redis = Redis.new(host: "localhost")
+      redis.set(@decoy.ip, @decoy.name)
+
       redirect_to decoys_path(@decoy)
+    else
+      render :edit
+    end
   end
 
   def edit
   end
 
   def destroy
+    system("docker stop #{@decoy.name}")
+    system("docker rm #{@decoy.name}")
     @decoy.destroy
     redirect_to decoys_path
   end
