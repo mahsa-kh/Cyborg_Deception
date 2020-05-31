@@ -20,8 +20,8 @@ class DecoysController < ApplicationController
 
 
 
+      file_name = "HAProxy-#{Time.now.getutc}-#{@decoy.name}"
 
-      file_name = "HAProxy-#{Time.now.to_i}-#{@decoy.name}"
       system("cd controllers/template")
       system("touch '#{file_name}.txt'")
       # system("touch 'controllers/template/#{file_name}.txt'")
@@ -30,6 +30,7 @@ class DecoysController < ApplicationController
        # az decoy template , field temokatre ro mirizam toosah
 
       cmd= "docker create -it --cap-add NET_ADMIN --network #{@decoy.network.macvlan_name} -e GW=#{@decoy.network.gateway} --ip #{@decoy.ip} --name #{@decoy.name} -v #{File.expand_path("#{file_name}")}:/usr/local/etc/haproxy/haproxy.cfg:ro cyborgsec/haproxy"
+
       #  --nameL mishe name e decoy ee kle user vaered karde
       # -v: badesh address e : ./template/{esme file a config ke bala dorst kardim}  :/usr baghiaro negah midari
 

@@ -1,0 +1,30 @@
+<h1>Decoy template</h1>
+<table border="1">
+  <tr>
+    <td>Name </td>
+    <td>TEMPLATE</td>
+    <td>DESCRIPTION</td>
+    <td>SERVICE</td>
+    <td>OS</td>
+    <td>ACTIONS</td>
+  </tr>
+
+    <tr>
+        <td><%=  @decoy_template.name%> </td>
+        <td><%=  @decoy_template.template%> </td>
+        <td><%=  @decoy_template.description%> </td>
+        <td><%=  @decoy_template.service%> </td>
+        <td><%=  @decoy_template.os%> </td>
+        <td>
+          <%= link_to edit_decoy_template_path(@decoy_template.id), method: :get do %>
+            <img src="<%= asset_path('edit.svg') %>" alt="" width='20px' height='20px'>
+          <% end %>
+          <%= link_to decoy_template_path(@decoy_template), method: :delete do %>
+            <img src="<%= asset_path('delete.svg') %>" alt="" width='20px' height='20px'>
+          <% end %>
+        </td>
+
+
+    </tr>
+
+</table>

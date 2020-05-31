@@ -21,7 +21,9 @@ class NetworksController < ApplicationController
       # interface: environment variable va inja bayad call beshe
       # vlan_id az network e tarif shode miad
       macvlan_net = "macvlan-#{@network.vlan}"
+
       @network.update(macvlan_name: macvlan_net)
+
       system("docker network create -d macvlan --subnet=#{@network.subnet} --gateway=#{@network.gateway} -o parent=#{ENV["INTERFACE"]}.#{@network.vlan} #{macvlan_net}")
 
       # parent: inetrface env varian.vlan e netwoerk

@@ -10,14 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+
 ActiveRecord::Schema.define(version: 2020_05_31_133117) do
+
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "decoy_templates", force: :cascade do |t|
     t.text "name"
-    t.text "template"
+    t.text "template" #config file HA Proxy
     t.text "description"
     t.text "service"
     t.text "os"
@@ -50,6 +52,7 @@ ActiveRecord::Schema.define(version: 2020_05_31_133117) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.text "macvlan_name"
+
     t.index ["user_id"], name: "index_networks_on_user_id"
   end
 
