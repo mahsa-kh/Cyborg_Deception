@@ -17,7 +17,7 @@ ActiveRecord::Schema.define(version: 2020_05_20_050405) do
 
   create_table "decoy_templates", force: :cascade do |t|
     t.text "name"
-    t.text "template"
+    t.text "template" #config file HA Proxy
     t.text "description"
     t.text "service"
     t.text "os"
