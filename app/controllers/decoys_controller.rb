@@ -27,7 +27,7 @@ class DecoysController < ApplicationController
       # system("touch 'controllers/template/#{file_name}.txt'")
       file_content = @decoy.decoy_template.template
       file_content.gsub!("/n", "\\")
-      system("echo '#{file_content}' >> '#{file_name}.txt'")
+      system("echo '#{file_content}' >> '#{file_name}'")
 
        # az decoy template , field temokatre ro mirizam toosah
 
