@@ -20,12 +20,14 @@ class DecoysController < ApplicationController
 
 
 
-      file_name = "HAProxy-#{Time.now.getutc}-#{@decoy.name}"
+      file_name = "HAProxy-#{(Time.now).to_i}-#{@decoy.name}.txt"
 
       system("cd controllers/template")
-      system("touch '#{file_name}.txt'")
+      system("touch '#{file_name}'")
       # system("touch 'controllers/template/#{file_name}.txt'")
-      system("echo '#{@decoy.decoy_template.template}' >> '#{file_name}.txt'")
+      file_content = @decoy.decoy_template.template
+      file_content.gsub!("/n", "\\")
+      system("echo '#{file_content}' >> '#{file_name}.txt'")
 
        # az decoy template , field temokatre ro mirizam toosah
 
