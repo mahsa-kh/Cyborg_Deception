@@ -50,7 +50,7 @@ class NetworksController < ApplicationController
   end
 
   def destroy
-    if (@network.decoy[0] != null)
+    if (@network.decoys[0] != null)
       flash[:alert] = "Delete decoys in your network first"
     else
       system("docker network rm #{@network.macvlan_name}")
