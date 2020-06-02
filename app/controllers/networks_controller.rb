@@ -18,7 +18,7 @@ class NetworksController < ApplicationController
 
     if @network.save
       system("vconfig add #{ENV["INTERFACE"]} #{@network.vlan}")
-      system("ifconfig #{ENV["INTERFACE"]} up")
+      system("ifconfig #{ENV["INTERFACE"]}.#{@network.vlan} up")
       # interface: environment variable va inja bayad call beshe
       # vlan_id az network e tarif shode miad
       macvlan_net = "macvlan-#{@network.vlan}"
@@ -50,6 +50,14 @@ class NetworksController < ApplicationController
   end
 
   def destroy
+    if (@network.decoy[0] != null) {
+      flash[:alert] = "Delete decoys in your network first"
+    }
+     else {
+      system("docker network rm #{@network.macvlan_name}")
+      system("config rem #{ENV["INTERFACE"]}.#{@network.vlan}")
+  }
+    end
     @network.destroy
     redirect_to networks_path
   end
