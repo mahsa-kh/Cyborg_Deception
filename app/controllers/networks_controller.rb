@@ -18,6 +18,7 @@ class NetworksController < ApplicationController
 
     if @network.save
       system("vconfig add #{ENV["INTERFACE"]} #{@network.vlan}")
+      system("ifconfig #{ENV["INTERFACE"]} up")
       # interface: environment variable va inja bayad call beshe
       # vlan_id az network e tarif shode miad
       macvlan_net = "macvlan-#{@network.vlan}"
